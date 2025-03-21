@@ -1,4 +1,4 @@
-namespace ProductManagement.Server
+namespace ProductManagement.Domain.Entities
 {
     public class WeatherForecast
     {

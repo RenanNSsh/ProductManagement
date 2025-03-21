@@ -1,0 +1,16 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "productmanagement.client\\productmanagement.client.esproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "ProductManagement.Server\\ProductManagement.API\\ProductManagement.API.csproj",
+        "Action": "Start",
+        "DebugTarget": "Container (Dockerfile)"
+      }
+    ]
+  }
+]

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using ProductManagement.Domain.Entities;
 
-namespace ProductManagement.Server.Controllers
+namespace ProductManagement.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
