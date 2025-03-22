@@ -8,11 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagement.API", "Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagement.Domain", "ProductManagement.Server\ProductManagement.Domain\ProductManagement.Domain.csproj", "{EA036823-06FE-48E2-A2A9-02CE4A40807C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagement.Infrastructure", "ProductManagement.Server\ProductManagement.Infrastructure\ProductManagement.Infrastructure.csproj", "{962765C6-0AB9-443B-A11E-5355B6E496C0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagement.Persistence", "ProductManagement.Server\ProductManagement.Persistence\ProductManagement.Persistence.csproj", "{2EA25D9B-E98A-46EA-9E99-AE18750B240D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagement.Identity", "ProductManagement.Server\ProductManagement.Identity\ProductManagement.Identity.csproj", "{E6BF2DA6-FBCF-4CFB-BE2B-DCD35C8E39AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagement.Application", "ProductManagement.Server\ProductManagement.Application\ProductManagement.Application.csproj", "{80077B73-D6F6-48FF-A375-99A8EB868BC1}"
 EndProject
