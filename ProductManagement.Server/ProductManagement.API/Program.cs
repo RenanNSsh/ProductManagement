@@ -2,12 +2,18 @@ using Microsoft.EntityFrameworkCore;
 using ProductManagement.Application.Services;
 using ProductManagement.Persistence.DatabaseContext;
 using ProductManagement.Persistence.Repositories;
+using ProductManagement.API.Middleware;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using ProductManagement.Application.Validators;
+using ProductManagement.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers()
+    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ProductValidator>());
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -33,6 +39,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Add exception handling middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 

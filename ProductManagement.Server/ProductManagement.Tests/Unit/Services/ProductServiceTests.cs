@@ -7,6 +7,8 @@ using ProductManagement.Application.Exceptions;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using ProductManagement.Tests.Unit.Base;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace ProductManagement.Tests.Unit.Services
 {
@@ -14,13 +16,28 @@ namespace ProductManagement.Tests.Unit.Services
     {
         private readonly Mock<IProductRepository> _repositoryMock;
         private readonly Mock<ILogger<ProductService>> _loggerMock;
+        private readonly Mock<IValidator<Product>> _productValidatorMock;
+        private readonly Mock<IValidator<PaginationParameters>> _paginationValidatorMock;
         private readonly ProductService _service;
 
         public ProductServiceTests()
         {
             _repositoryMock = new Mock<IProductRepository>();
             _loggerMock = new Mock<ILogger<ProductService>>();
-            _service = new ProductService(_repositoryMock.Object, _loggerMock.Object);
+            _productValidatorMock = new Mock<IValidator<Product>>();
+            _paginationValidatorMock = new Mock<IValidator<PaginationParameters>>();
+            _service = new ProductService(
+                _repositoryMock.Object,
+                _loggerMock.Object,
+                _productValidatorMock.Object,
+                _paginationValidatorMock.Object
+            );
+
+            // Setup default validation success for all tests
+            _productValidatorMock.Setup(v => v.ValidateAsync(It.IsAny<Product>(), default))
+                .ReturnsAsync(new FluentValidation.Results.ValidationResult());
+            _paginationValidatorMock.Setup(v => v.ValidateAsync(It.IsAny<PaginationParameters>(), default))
+                .ReturnsAsync(new FluentValidation.Results.ValidationResult());
         }
 
         [Fact]
@@ -96,9 +113,17 @@ namespace ProductManagement.Tests.Unit.Services
         {
             // Arrange
             var product = new Product { Name = "", Price = -100, StockQuantity = -10 };
+            var validationResult = new FluentValidation.Results.ValidationResult(new List<ValidationFailure>
+            {
+                new("Name", "Name is required"),
+                new("Price", "Price must be greater than 0"),
+                new("StockQuantity", "Stock quantity must be greater than 0")
+            });
+            _productValidatorMock.Setup(v => v.ValidateAsync(product, default))
+                .ReturnsAsync(validationResult);
 
             // Act & Assert
-            await Assert.ThrowsAsync<ValidationException>(() => _service.CreateProductAsync(product));
+            await Assert.ThrowsAsync<FluentValidation.ValidationException>(() => _service.CreateProductAsync(product));
         }
 
         [Fact]
@@ -106,6 +131,7 @@ namespace ProductManagement.Tests.Unit.Services
         {
             // Arrange
             var product = new Product { Id = 1, Name = "Updated Product", Price = 150, StockQuantity = 15 };
+            _repositoryMock.Setup(r => r.GetByIdAsync(product.Id)).ReturnsAsync(product);
             _repositoryMock.Setup(r => r.UpdateAsync(product)).ReturnsAsync(product);
 
             // Act
@@ -123,7 +149,7 @@ namespace ProductManagement.Tests.Unit.Services
         {
             // Arrange
             var product = new Product { Id = 1, Name = "Test Product", Price = 100, StockQuantity = 10 };
-            _repositoryMock.Setup(r => r.UpdateAsync(product)).ReturnsAsync((Product?)null);
+            _repositoryMock.Setup(r => r.GetByIdAsync(product.Id)).ReturnsAsync((Product?)null);
 
             // Act & Assert
             await Assert.ThrowsAsync<NotFoundException>(() => _service.UpdateProductAsync(product));

@@ -1,9 +1,9 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Logging;
 using ProductManagement.Application.Exceptions;
 using ProductManagement.Domain.Entities;
 using ProductManagement.Persistence.Repositories;
 using ProductManagement.Application.Common.Models;
+using FluentValidation;
 
 namespace ProductManagement.Application.Services
 {
@@ -11,15 +11,31 @@ namespace ProductManagement.Application.Services
     {
         private readonly IProductRepository _repository;
         private readonly ILogger<ProductService> _logger;
+        private readonly IValidator<Product> _validator;
+        private readonly IValidator<PaginationParameters> _paginationValidator;
 
-        public ProductService(IProductRepository repository, ILogger<ProductService> logger)
+        public ProductService(
+            IProductRepository repository, 
+            ILogger<ProductService> logger, 
+            IValidator<Product> validator,
+            IValidator<PaginationParameters> paginationValidator)
         {
             _repository = repository;
             _logger = logger;
+            _validator = validator;
+            _paginationValidator = paginationValidator;
         }
 
         public async Task<PagedResponse<Product>> GetAllProductsAsync(PaginationParameters parameters)
         {
+            var validationResult = await _paginationValidator.ValidateAsync(parameters);
+            if (!validationResult.IsValid)
+            {
+                var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
+                _logger.LogWarning("Validation failed for pagination parameters: {errors}", errors);
+                throw new FluentValidation.ValidationException(validationResult.Errors);
+            }
+
             var totalCount = await _repository.GetTotalCountAsync();
             var items = await _repository.GetPagedProductsAsync(parameters.PageNumber, parameters.PageSize);
             
@@ -50,46 +66,52 @@ namespace ProductManagement.Application.Services
         public async Task<Product> CreateProductAsync(Product product)
         {
             _logger.LogInformation("Creating new product");
-            ValidateProduct(product);
+            var validationResult = await _validator.ValidateAsync(product);
+            if (!validationResult.IsValid)
+            {
+                var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
+                _logger.LogWarning("Validation failed for product: {errors}", errors);
+                throw new FluentValidation.ValidationException(validationResult.Errors);
+            }
+
             return await _repository.CreateAsync(product);
         }
 
         public async Task<Product> UpdateProductAsync(Product product)
         {
+           
             _logger.LogInformation("Updating product with ID: {id}", product.Id);
-            ValidateProduct(product);
-            var updatedProduct = await _repository.UpdateAsync(product);
-            if (updatedProduct == null)
+            var validationResult = await _validator.ValidateAsync(product);
+            if (!validationResult.IsValid)
+            {
+                var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
+                _logger.LogWarning("Validation failed for product: {errors}", errors);
+                throw new FluentValidation.ValidationException(validationResult.Errors);
+            }
+
+            // Check if product exists
+            var existingProduct = await _repository.GetByIdAsync(product.Id);
+            if (existingProduct == null)
             {
                 _logger.LogWarning("Product with ID {id} not found", product.Id);
                 throw new NotFoundException($"Product with ID {product.Id} not found");
             }
+
+            var updatedProduct = await _repository.UpdateAsync(product);
             return updatedProduct;
+        
         }
 
         public async Task<bool> DeleteProductAsync(int id)
         {
             _logger.LogInformation("Deleting product with ID: {id}", id);
-            return await _repository.DeleteAsync(id);
-        }
-
-        private void ValidateProduct(Product product)
-        {
-            if (string.IsNullOrEmpty(product.Name))
+            var result = await _repository.DeleteAsync(id);
+            if (!result)
             {
-                _logger.LogWarning("Product name is required");
-                throw new ValidationException("Product name is required");
+                _logger.LogWarning("Product with ID {id} not found", id);
+                throw new NotFoundException($"Product with ID {id} not found");
             }
-            if (product.Price < 0)
-            {
-                _logger.LogWarning("Product price cannot be negative");
-                throw new ValidationException("Product price cannot be negative");
-            }
-            if (product.StockQuantity < 0)
-            {
-                _logger.LogWarning("Stock quantity cannot be negative");
-                throw new ValidationException("Stock quantity cannot be negative");
-            }
+            return true;
         }
     }
 } 
