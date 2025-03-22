@@ -19,24 +19,28 @@ FROM with-node AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
+# Install EF Core tools
+
 # Copy all project files
-COPY ["ProductManagement.Server/ProductManagement.API/ProductManagement.API.csproj", "ProductManagement.Server/ProductManagement.API/"]
-COPY ["ProductManagement.Server/ProductManagement.Domain/ProductManagement.Domain.csproj", "ProductManagement.Server/ProductManagement.Domain/"]
-COPY ["ProductManagement.Server/ProductManagement.Application/ProductManagement.Application.csproj", "ProductManagement.Server/ProductManagement.Application/"]
-COPY ["ProductManagement.Server/ProductManagement.Infrastructure/ProductManagement.Infrastructure.csproj", "ProductManagement.Server/ProductManagement.Infrastructure/"]
-COPY ["ProductManagement.Server/ProductManagement.Persistence/ProductManagement.Persistence.csproj", "ProductManagement.Server/ProductManagement.Persistence/"]
-COPY ["ProductManagement.Server/ProductManagement.Identity/ProductManagement.Identity.csproj", "ProductManagement.Server/ProductManagement.Identity/"]
-COPY ["productmanagement.client/productmanagement.client.esproj", "productmanagement.client/"]
+COPY ["ProductManagement.API/ProductManagement.API.csproj", "ProductManagement.API/"]
+COPY ["ProductManagement.Domain/ProductManagement.Domain.csproj", "ProductManagement.Domain/"]
+COPY ["ProductManagement.Application/ProductManagement.Application.csproj", "ProductManagement.Application/"]
+COPY ["ProductManagement.Infrastructure/ProductManagement.Infrastructure.csproj", "ProductManagement.Infrastructure/"]
+COPY ["ProductManagement.Persistence/ProductManagement.Persistence.csproj", "ProductManagement.Persistence/"]
+COPY ["ProductManagement.Identity/ProductManagement.Identity.csproj", "ProductManagement.Identity/"]
 
 # Restore packages
-RUN dotnet restore "ProductManagement.Server/ProductManagement.API/ProductManagement.API.csproj"
+RUN dotnet restore "ProductManagement.API/ProductManagement.API.csproj"
 
 # Copy all source code
 COPY . .
 
 # Build the API project
-WORKDIR "/src/ProductManagement.Server/ProductManagement.API"
+WORKDIR "/src/ProductManagement.API"
 RUN dotnet build "ProductManagement.API.csproj" -c $BUILD_CONFIGURATION -o /src/build
+
+# Create and apply migrations
+WORKDIR "/src"
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
@@ -44,7 +48,10 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "ProductManagement.API.csproj" -c $BUILD_CONFIGURATION -o /src/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS final
 WORKDIR /app
 COPY --from=publish /src/publish .
+COPY --from=build /src /src
+COPY --from=build /root/.dotnet/tools /root/.dotnet/tools
+ENV PATH="${PATH}:/root/.dotnet/tools"
 ENTRYPOINT ["dotnet", "ProductManagement.API.dll"]
