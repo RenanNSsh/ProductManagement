@@ -10,6 +10,6 @@ namespace ProductManagement.Persistence.DatabaseContext
         {
         }
 
-        public DbSet<Product> Products { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
     } 
 }

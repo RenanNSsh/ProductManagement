@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -16,6 +15,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagement.Identity", "ProductManagement.Server\ProductManagement.Identity\ProductManagement.Identity.csproj", "{E6BF2DA6-FBCF-4CFB-BE2B-DCD35C8E39AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagement.Application", "ProductManagement.Server\ProductManagement.Application\ProductManagement.Application.csproj", "{80077B73-D6F6-48FF-A375-99A8EB868BC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManagement.Tests", "ProductManagement.Server\ProductManagement.Tests\ProductManagement.Tests.csproj", "{B695F40E-5F2B-4B9A-9674-759235DE8626}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 EndProject
@@ -55,6 +56,10 @@ Global
 		{80077B73-D6F6-48FF-A375-99A8EB868BC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80077B73-D6F6-48FF-A375-99A8EB868BC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80077B73-D6F6-48FF-A375-99A8EB868BC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B695F40E-5F2B-4B9A-9674-759235DE8626}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B695F40E-5F2B-4B9A-9674-759235DE8626}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B695F40E-5F2B-4B9A-9674-759235DE8626}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B695F40E-5F2B-4B9A-9674-759235DE8626}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
