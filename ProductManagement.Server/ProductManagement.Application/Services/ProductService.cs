@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using ProductManagement.Application.Exceptions;
 using ProductManagement.Domain.Entities;
 using ProductManagement.Persistence.Repositories;
-
+using ProductManagement.Application.Common.Models;
 
 namespace ProductManagement.Application.Services
 {
@@ -18,10 +18,21 @@ namespace ProductManagement.Application.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        public async Task<PagedResponse<Product>> GetAllProductsAsync(PaginationParameters parameters)
         {
-            _logger.LogInformation("Getting all products");
-            return await _repository.GetAllAsync();
+            var totalCount = await _repository.GetTotalCountAsync();
+            var items = await _repository.GetPagedProductsAsync(parameters.PageNumber, parameters.PageSize);
+            
+            var response = new PagedResponse<Product>
+            {
+                Items = items,
+                PageNumber = parameters.PageNumber,
+                PageSize = parameters.PageSize,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)parameters.PageSize)
+            };
+
+            return response;
         }
 
         public async Task<Product> GetProductByIdAsync(int id)

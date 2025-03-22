@@ -1,5 +1,3 @@
-
-
 using Microsoft.EntityFrameworkCore;
 using ProductManagement.Domain.Entities;
 using ProductManagement.Persistence.DatabaseContext;
@@ -56,6 +54,19 @@ namespace ProductManagement.Persistence.Repositories
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<IEnumerable<Product>> GetPagedProductsAsync(int pageNumber, int pageSize)
+        {
+            return await _context.Products
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await _context.Products.CountAsync();
         }
     }
 } 

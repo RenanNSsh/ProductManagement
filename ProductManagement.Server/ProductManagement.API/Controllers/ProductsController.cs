@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Application.Exceptions;
 using ProductManagement.Application.Services;
 using ProductManagement.Domain.Entities;
+using ProductManagement.Application.Common.Models;
 
 namespace WebApi.Controllers
 {
@@ -18,10 +19,10 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<PagedResponse<Product>>> GetProducts([FromQuery] PaginationParameters parameters)
         {
-            var products = await _productService.GetAllProductsAsync();
-            return Ok(products);
+            var pagedProducts = await _productService.GetAllProductsAsync(parameters);
+            return Ok(pagedProducts);
         }
 
         [HttpGet("{id}")]
