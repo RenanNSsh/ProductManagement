@@ -1,0 +1,71 @@
+<div class="container">
+  <h2>Create New Order</h2>
+
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="customerName">Customer Name</label>
+      <input type="text" 
+             id="customerName" 
+             formControlName="customerName" 
+             class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="customerEmail">Customer Email</label>
+      <input type="email" 
+             id="customerEmail" 
+             formControlName="customerEmail" 
+             class="form-control">
+    </div>
+
+    <div formArrayName="orderItems">
+      <h3>Order Items</h3>
+      <div *ngFor="let item of orderItems.controls; let i=index" [formGroupName]="i">
+        <div class="order-item">
+          <div class="form-group">
+            <label [for]="'productId' + i">Product</label>
+            <select [id]="'productId' + i" 
+                    formControlName="productId" 
+                    class="form-control">
+              <option value="">Select a product</option>
+              <option *ngFor="let product of (products$ | async)?.items" 
+                      [value]="product.id">
+                {{product.name}} - $ {{product.price}}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label [for]="'quantity' + i">Quantity</label>
+            <input type="number" 
+                   [id]="'quantity' + i" 
+                   formControlName="quantity" 
+                   class="form-control">
+          </div>
+
+          <button type="button" 
+                  (click)="removeOrderItem(i)" 
+                  class="btn btn-danger">
+            Remove
+          </button>
+        </div>
+      </div>
+
+      <button type="button" 
+              (click)="addOrderItem()" 
+              class="btn btn-secondary">
+        Add Item
+      </button>
+    </div>
+
+    <button type="submit" 
+            [disabled]="!orderForm.valid" 
+            class="btn btn-primary">
+      Create Order
+    </button>
+  </form>
+
+  <div *ngIf="error$ | async as error" class="error">
+    {{error}}
+  </div>
+</div> 

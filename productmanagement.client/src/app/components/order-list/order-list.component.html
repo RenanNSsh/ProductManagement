@@ -1,0 +1,48 @@
+<div class="container">
+  <h2>Orders</h2>
+  
+  <div class="filters">
+    <button (click)="loadAllOrders()">All Orders</button>
+    <button *ngFor="let status of orderStatuses" 
+            (click)="loadOrdersByStatus(status)">
+      {{status}}
+    </button>
+  </div>
+
+  <div *ngIf="loading$ | async" class="loading">
+    Loading...
+  </div>
+
+  <div *ngIf="error$ | async as error" class="error">
+    {{error}}
+  </div>
+
+  <div class="orders-grid">
+    <div *ngFor="let order of orders$ | async" class="order-card">
+      <h3>Order #{{order.id}}</h3>
+      <p>Customer: {{order.customerName}}</p>
+      <p>Email: {{order.customerEmail}}</p>
+      <p>Status: {{order.status}}</p>
+      <p>Total: $ {{order.totalAmount}}</p>
+      <p>Date: {{order.orderDate | date}}</p>
+      
+      <div class="order-items">
+        <h4>Items:</h4>
+        <ul>
+          <li *ngFor="let item of order.orderItems">
+            {{item.productName}} x {{item.quantity}} - $ {{item.totalPrice}}
+          </li>
+        </ul>
+      </div>
+
+      <div class="actions">
+        <select [(ngModel)]="order.status" 
+                (change)="updateOrderStatus(order.id, order.status)">
+          <option *ngFor="let status of orderStatuses" [value]="status">
+            {{status}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div> 

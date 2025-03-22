@@ -14,6 +14,7 @@ import { OrderFormComponent } from './components/order-form/order-form.component
 import { orderReducer } from './store/order/order.reducer';
 import { OrderEffects } from './store/order/order.effects';
 import { OrderService } from './services/order.service';
+import { ProductService } from './services/product.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { OrderService } from './services/order.service';
     }),
     AppRoutingModule
   ],
-  providers: [OrderService],
+  providers: [OrderService, ProductService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
