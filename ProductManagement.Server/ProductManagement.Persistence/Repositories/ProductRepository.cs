@@ -18,7 +18,7 @@ namespace ProductManagement.Persistence.Repositories
             return await _context.Products.ToListAsync();
         }
 
-        public async Task<Product?> GetByIdAsync(int id)
+        public async Task<Product?> GetByIdAsync(Guid id)
         {
             return await _context.Products.FindAsync(id);
         }
@@ -46,7 +46,7 @@ namespace ProductManagement.Persistence.Repositories
             return existingProduct;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var product = await _context.Products.FindAsync(id);
             if (product == null) return false;

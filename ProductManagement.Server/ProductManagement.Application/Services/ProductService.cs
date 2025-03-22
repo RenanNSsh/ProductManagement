@@ -51,7 +51,7 @@ namespace ProductManagement.Application.Services
             return response;
         }
 
-        public async Task<Product> GetProductByIdAsync(int id)
+        public async Task<Product> GetProductByIdAsync(Guid id)
         {
             _logger.LogInformation("Getting product by ID: {id}", id);
             var product = await _repository.GetByIdAsync(id);
@@ -102,7 +102,7 @@ namespace ProductManagement.Application.Services
         
         }
 
-        public async Task<bool> DeleteProductAsync(int id)
+        public async Task<bool> DeleteProductAsync(Guid id)
         {
             _logger.LogInformation("Deleting product with ID: {id}", id);
             var result = await _repository.DeleteAsync(id);

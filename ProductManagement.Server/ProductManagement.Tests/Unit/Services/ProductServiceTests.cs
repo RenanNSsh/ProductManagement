@@ -47,8 +47,8 @@ namespace ProductManagement.Tests.Unit.Services
             var parameters = new PaginationParameters { PageNumber = 1, PageSize = 10 };
             var products = new List<Product>
             {
-                new() { Id = 1, Name = "Test Product 1", Price = 100, StockQuantity = 10 },
-                new() { Id = 2, Name = "Test Product 2", Price = 200, StockQuantity = 20 }
+                new() { Id = new Guid(), Name = "Test Product 1", Price = 100, StockQuantity = 10 },
+                new() { Id = new Guid(), Name = "Test Product 2", Price = 200, StockQuantity = 20 }
             };
 
             _repositoryMock.Setup(r => r.GetTotalCountAsync()).ReturnsAsync(2);
@@ -69,7 +69,7 @@ namespace ProductManagement.Tests.Unit.Services
         public async Task GetProductByIdAsync_WhenProductExists_ShouldReturnProduct()
         {
             // Arrange
-            var productId = 1;
+            var productId = new Guid();
             var product = new Product { Id = productId, Name = "Test Product", Price = 100, StockQuantity = 10 };
             _repositoryMock.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync(product);
 
@@ -85,7 +85,7 @@ namespace ProductManagement.Tests.Unit.Services
         public async Task GetProductByIdAsync_WhenProductDoesNotExist_ShouldThrowNotFoundException()
         {
             // Arrange
-            var productId = 1;
+            var productId = new Guid();
             _repositoryMock.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync((Product?)null);
 
             // Act & Assert
@@ -130,7 +130,7 @@ namespace ProductManagement.Tests.Unit.Services
         public async Task UpdateProductAsync_WhenProductExists_ShouldUpdateProduct()
         {
             // Arrange
-            var product = new Product { Id = 1, Name = "Updated Product", Price = 150, StockQuantity = 15 };
+            var product = new Product { Id = new Guid(), Name = "Updated Product", Price = 150, StockQuantity = 15 };
             _repositoryMock.Setup(r => r.GetByIdAsync(product.Id)).ReturnsAsync(product);
             _repositoryMock.Setup(r => r.UpdateAsync(product)).ReturnsAsync(product);
 
@@ -148,7 +148,7 @@ namespace ProductManagement.Tests.Unit.Services
         public async Task UpdateProductAsync_WhenProductDoesNotExist_ShouldThrowNotFoundException()
         {
             // Arrange
-            var product = new Product { Id = 1, Name = "Test Product", Price = 100, StockQuantity = 10 };
+            var product = new Product { Id = new Guid(), Name = "Test Product", Price = 100, StockQuantity = 10 };
             _repositoryMock.Setup(r => r.GetByIdAsync(product.Id)).ReturnsAsync((Product?)null);
 
             // Act & Assert
@@ -159,7 +159,7 @@ namespace ProductManagement.Tests.Unit.Services
         public async Task DeleteProductAsync_ShouldReturnTrue()
         {
             // Arrange
-            var productId = 1;
+            var productId = new Guid();
             _repositoryMock.Setup(r => r.DeleteAsync(productId)).ReturnsAsync(true);
 
             // Act

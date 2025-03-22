@@ -49,7 +49,7 @@ namespace ProductManagement.Tests.Unit.Repositories
         public async Task GetByIdAsync_WhenProductDoesNotExist_ShouldReturnNull()
         {
             // Act
-            var result = await _repository.GetByIdAsync(1);
+            var result = await _repository.GetByIdAsync(new Guid());
 
             // Assert
             Assert.Null(result);
@@ -67,7 +67,6 @@ namespace ProductManagement.Tests.Unit.Repositories
             // Assert
             Assert.NotNull(result);
             Assert.Equal(product.Name, result.Name);
-            Assert.True(result.Id > 0);
 
             var savedProduct = await _context.Products.FindAsync(result.Id);
             Assert.NotNull(savedProduct);
@@ -106,7 +105,7 @@ namespace ProductManagement.Tests.Unit.Repositories
         public async Task UpdateAsync_WhenProductDoesNotExist_ShouldReturnNull()
         {
             // Arrange
-            var product = new Product { Id = 1, Name = "Non-existent Product", Description = "Non-existent Description" };
+            var product = new Product { Id = new Guid(), Name = "Non-existent Product", Description = "Non-existent Description" };
 
             // Act
             var result = await _repository.UpdateAsync(product);
@@ -136,7 +135,7 @@ namespace ProductManagement.Tests.Unit.Repositories
         public async Task DeleteAsync_WhenProductDoesNotExist_ShouldReturnFalse()
         {
             // Act
-            var result = await _repository.DeleteAsync(1);
+            var result = await _repository.DeleteAsync(new Guid());
 
             // Assert
             Assert.False(result);

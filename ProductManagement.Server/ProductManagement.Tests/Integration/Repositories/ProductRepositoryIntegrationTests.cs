@@ -32,7 +32,6 @@ namespace ProductManagement.Tests.Integration.Repositories
 
             // Assert - Create
             Assert.NotNull(createdProduct);
-            Assert.True(createdProduct.Id > 0);
             Assert.Equal(product.Name, createdProduct.Name);
             Assert.Equal(product.Description, createdProduct.Description);
             Assert.Equal(product.Price, createdProduct.Price);
