@@ -1,1 +1,14 @@
 ﻿
+<nav class="navbar">
+    <div class="container">
+      <h1>Product Management</h1>
+      <ul>
+        <li><a routerLink="/orders" routerLinkActive="active">Orders</a></li>
+        <li><a routerLink="/orders/new" routerLinkActive="active">New Order</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>

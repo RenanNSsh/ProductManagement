@@ -1,45 +1,54 @@
 <div class="container">
-  <h2>Orders</h2>
-  
-  <div class="filters">
-    <button (click)="loadAllOrders()">All Orders</button>
-    <button *ngFor="let status of orderStatuses" 
-            (click)="loadOrdersByStatus(status)">
-      {{status}}
-    </button>
-  </div>
-
-  <div *ngIf="loading$ | async" class="loading">
-    Loading...
+  <div class="header">
+    <h2>Orders</h2>
+    <div class="status-filter">
+      <select [(ngModel)]="selectedStatus" (change)="onStatusChange($event)">
+        <option [ngValue]="null">All Orders</option>
+        <option *ngFor="let status of orderStatuses" [ngValue]="status">
+          {{getStatusLabel(status)}}
+        </option>
+      </select>
+    </div>
   </div>
 
   <div *ngIf="error$ | async as error" class="error">
-    {{error}}
+    Error: {{ error }}
   </div>
 
-  <div class="orders-grid">
-    <div *ngFor="let order of orders$ | async" class="order-card">
-      <h3>Order #{{order.id}}</h3>
-      <p>Customer: {{order.customerName}}</p>
-      <p>Email: {{order.customerEmail}}</p>
-      <p>Status: {{order.status}}</p>
-      <p>Total: $ {{order.totalAmount}}</p>
-      <p>Date: {{order.orderDate | date}}</p>
-      
-      <div class="order-items">
-        <h4>Items:</h4>
-        <ul>
-          <li *ngFor="let item of order.orderItems">
-            {{item.productName}} x {{item.quantity}} - $ {{item.totalPrice}}
-          </li>
-        </ul>
-      </div>
+  <div *ngIf="loading$ | async" class="orders-grid">
+    <div class="grid-header">
+      <div>Order ID</div>
+      <div>Customer Name</div>
+      <div>Total Amount</div>
+      <div>Status</div>
+      <div>Actions</div>
+    </div>
+    <div *ngFor="let i of [1,2,3,4,5]" class="grid-row">
+      <div><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
+      <div><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
+      <div><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
+      <div><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
+      <div><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
+    </div>
+  </div>
 
-      <div class="actions">
-        <select [(ngModel)]="order.status" 
-                (change)="updateOrderStatus(order.id, order.status)">
+  <div *ngIf="!(loading$ | async) && !(error$ | async)" class="orders-grid">
+    <div class="grid-header">
+      <div>Order ID</div>
+      <div>Customer Name</div>
+      <div>Total Amount</div>
+      <div>Status</div>
+      <div>Actions</div>
+    </div>
+    <div *ngFor="let order of orders$ | async" class="grid-row">
+      <div>{{ order.id }}</div>
+      <div>{{ order.customerName }}</div>
+      <div>{{ order.totalAmount | currency }}</div>
+      <div>{{ getStatusLabel(order.status) }}</div>
+      <div>
+        <select [(ngModel)]="order.status" (change)="updateOrderStatus(order.id, $event)">
           <option *ngFor="let status of orderStatuses" [value]="status">
-            {{status}}
+            {{getStatusLabel(status)}}
           </option>
         </select>
       </div>

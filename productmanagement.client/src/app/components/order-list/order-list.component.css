@@ -2,6 +2,92 @@
   padding: 20px;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.status-filter select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.skeleton-container {
+  padding: 1rem;
+}
+
+.skeleton-header {
+  margin-bottom: 2rem;
+}
+
+.skeleton-table {
+  width: 100%;
+}
+
+.error {
+  color: #dc3545;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #dc3545;
+  border-radius: 4px;
+  background-color: #f8d7da;
+}
+
+.orders-grid {
+  display: grid;
+  grid-template-columns: 15% 25% 20% 20% 20%;
+  gap: 0;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.grid-header {
+  display: contents;
+}
+
+.grid-header > div {
+  padding: 12px;
+  background-color: #f8f9fa;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+
+.grid-row {
+  display: contents;
+}
+
+.grid-row > div {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  text-align: left;
+  align-items: center;
+}
+
+/* Style for the status select in the Actions column */
+.grid-row > div:last-child select {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  width: 100%;
+  max-width: 150px;
+}
+
+/* Ensure skeleton loaders fill their containers */
+.grid-row > div app-skeleton-loader {
+  width: 100%;
+  display: block;
+}
+
 .filters {
   margin-bottom: 20px;
 }
@@ -25,19 +111,34 @@
   padding: 20px;
 }
 
-.error {
-  color: red;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid red;
-  border-radius: 4px;
+.orders-list {
+  width: 100%;
+  overflow-x: auto;
 }
 
-.orders-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+/* Fixed column widths */
+th:nth-child(1), td:nth-child(1) { width: 15%; }  /* Order ID */
+th:nth-child(2), td:nth-child(2) { width: 25%; }  /* Customer Name */
+th:nth-child(3), td:nth-child(3) { width: 20%; }  /* Total Amount */
+th:nth-child(4), td:nth-child(4) { width: 20%; }  /* Status */
+th:nth-child(5), td:nth-child(5) { width: 20%; }  /* Actions */
 
 .order-card {
   border: 1px solid #ddd;

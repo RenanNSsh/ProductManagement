@@ -1,28 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ProductDto } from '../../models/product.dto';
-import { CreateOrderDto, CreateOrderItemDto, PaginatedResponseDTO } from '../../models/order.dto';
+import { CreateOrderDto, CreateOrderItemDto } from '../../models/order.dto';
 import * as OrderActions from '../../store/order/order.actions';
 import { OrderState } from '../../store/order/order.reducer';
-import { ProductService } from '../../services/product.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  standalone: false,
   selector: 'app-order-form',
   templateUrl: './order-form.component.html',
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
   styleUrls: ['./order-form.component.css']
 })
 export class OrderFormComponent implements OnInit {
   orderForm: FormGroup;
-  products$: Observable<PaginatedResponseDTO<ProductDto>>;
+  products$: Observable<ProductDto[]> = new Observable<ProductDto[]>();
   error$: Observable<any>;
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<{ order: OrderState }>,
-    private productService: ProductService
+    private store: Store<{ order: OrderState }>
   ) {
     this.orderForm = this.fb.group({
       customerName: ['', Validators.required],
@@ -31,12 +34,11 @@ export class OrderFormComponent implements OnInit {
     });
 
     this.error$ = this.store.select(state => state.order.error);
-    this.products$ = this.productService.getProducts();
   }
 
   ngOnInit(): void {
-    // Add initial order item
-    this.addOrderItem();
+    // Load products from store
+    // this.products$ = this.store.select(state => state.product.products);
   }
 
   get orderItems() {

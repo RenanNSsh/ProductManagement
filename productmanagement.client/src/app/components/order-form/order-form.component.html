@@ -28,7 +28,7 @@
                     formControlName="productId" 
                     class="form-control">
               <option value="">Select a product</option>
-              <option *ngFor="let product of (products$ | async)?.items" 
+              <option *ngFor="let product of (products$ | async)" 
                       [value]="product.id">
                 {{product.name}} - $ {{product.price}}
               </option>
