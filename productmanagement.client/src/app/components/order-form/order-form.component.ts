@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     ReactiveFormsModule
   ],
-  styleUrls: ['./order-form.component.css']
+  styleUrls: ['./order-form.component.scss']
 })
 export class OrderFormComponent implements OnInit {
   orderForm: FormGroup;

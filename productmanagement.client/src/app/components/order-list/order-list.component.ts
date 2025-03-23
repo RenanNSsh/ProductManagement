@@ -18,7 +18,7 @@ import { SkeletonLoaderComponent } from '../skeleton-loader/skeleton-loader.comp
     FormsModule,
     SkeletonLoaderComponent
   ],
-  styleUrls: ['./order-list.component.css']
+  styleUrls: ['./order-list.component.scss']
 })
 export class OrderListComponent implements OnInit {
   orders$: Observable<OrderDto[]>;
