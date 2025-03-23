@@ -1,8 +1,8 @@
 <div class="order-list__container">
   <div class="order-list__header">
-    <h2 class="order-list__title">Orders</h2>
+    <h2 class="order-list__title" data-test="orders-title">Orders</h2>
     <div class="order-list__status-filter">
-      <select [(ngModel)]="selectedStatus" (change)="onStatusChange($event)">
+      <select data-test="status-filter" [(ngModel)]="selectedStatus" (change)="onStatusChange($event)">
         <option [ngValue]="null">All Orders</option>
         <option *ngFor="let status of orderStatuses" [ngValue]="status">
           {{getStatusLabel(status)}}
@@ -11,11 +11,11 @@
     </div>
   </div>
 
-  <div *ngIf="error$ | async as error" class="order-list__error">
+  <div *ngIf="error$ | async as error" class="order-list__error" data-test="error-message">
     Error: {{ error }}
   </div>
 
-  <div *ngIf="loading$ | async" class="order-list__grid">
+  <div *ngIf="loading$ | async" class="order-list__grid" data-test="loading-grid">
     <div class="order-list__grid-header">
       <div class="order-list__grid-header-cell">Order ID</div>
       <div class="order-list__grid-header-cell">Customer Name</div>
@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <div *ngIf="(loading$ | async) === false && (error$ | async) === null" class="order-list__grid">
+  <div *ngIf="(loading$ | async) === false && (error$ | async) === null" class="order-list__grid" data-test="orders-grid">
     <div class="order-list__grid-header">
       <div class="order-list__grid-header-cell">Order ID</div>
       <div class="order-list__grid-header-cell">Customer Name</div>
@@ -40,13 +40,13 @@
       <div class="order-list__grid-header-cell">Status</div>
       <div class="order-list__grid-header-cell">Actions</div>
     </div>
-    <div *ngFor="let order of orders$ | async" class="order-list__grid-row">
-      <div class="order-list__grid-row-cell">{{ order.id }}</div>
-      <div class="order-list__grid-row-cell">{{ order.customerName }}</div>
-      <div class="order-list__grid-row-cell">{{ order.totalAmount | currency }}</div>
-      <div class="order-list__grid-row-cell">{{ getStatusLabel(order.status) }}</div>
+    <div *ngFor="let order of orders$ | async" class="order-list__grid-row" data-test="order-row">
+      <div class="order-list__grid-row-cell" data-test="order-id">{{ order.id }}</div>
+      <div class="order-list__grid-row-cell" data-test="customer-name">{{ order.customerName }}</div>
+      <div class="order-list__grid-row-cell" data-test="total-amount">{{ order.totalAmount | currency }}</div>
+      <div class="order-list__grid-row-cell" data-test="order-status">{{ getStatusLabel(order.status) }}</div>
       <div class="order-list__grid-row-cell">
-        <select class="order-list__status-select" [(ngModel)]="order.status" (change)="updateOrderStatus(order.id, $event)">
+        <select data-test="status-select" class="order-list__status-select" [(ngModel)]="order.status" (change)="updateOrderStatus(order.id, $event)">
           <option *ngFor="let status of orderStatuses" [value]="status">
             {{getStatusLabel(status)}}
           </option>

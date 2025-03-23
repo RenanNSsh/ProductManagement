@@ -10,7 +10,10 @@
     "prestart": "node aspnetcore-https",
     "start:windows": "ng serve --ssl --ssl-cert \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.pem\" --ssl-key \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.key\" --host=127.0.0.1",
     "start:default": "ng serve --ssl --ssl-cert \"$HOME/.aspnet/https/${npm_package_name}.pem\" --ssl-key \"$HOME/.aspnet/https/${npm_package_name}.key\" --host=127.0.0.1",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "private": true,
   "dependencies": {
@@ -38,6 +41,7 @@
     "@angular-devkit/build-angular": "^19.0.6",
     "@angular/cli": "^19.0.6",
     "@angular/compiler-cli": "^19.0.0",
+    "@cypress/schematic": "^3.0.0",
     "@types/jasmine": "~5.1.0",
     "angular-eslint": "19.3.0",
     "eslint": "^9.23.0",
@@ -50,6 +54,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.6.2",
-    "typescript-eslint": "8.27.0"
+    "typescript-eslint": "8.27.0",
+    "cypress": "latest"
   }
 }

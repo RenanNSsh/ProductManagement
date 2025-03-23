@@ -1,7 +1,7 @@
 <div class="order-form__container">
-  <h2 class="order-form__title">Create New Order</h2>
+  <h2 class="order-form__title" data-test="form-title">Create New Order</h2>
 
-  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" data-test="order-form">
     <div class="order-form__customer-section">
       <div class="order-form__form-group">
         <label for="customerName" class="order-form__label">Customer Name</label>
@@ -9,6 +9,7 @@
                id="customerName" 
                formControlName="customerName" 
                class="order-form__input"
+               data-test="customer-name-input"
                placeholder="Enter customer name">
       </div>
 
@@ -18,19 +19,21 @@
                id="customerEmail" 
                formControlName="customerEmail" 
                class="order-form__input"
+               data-test="customer-email-input"
                placeholder="Enter customer email">
       </div>
     </div>
 
     <div formArrayName="orderItems" class="order-form__items">
       <h3 class="order-form__items-title">Order Items</h3>
-      <div *ngFor="let item of orderItems.controls; let i=index" [formGroupName]="i">
+      <div *ngFor="let item of orderItems.controls; let i=index" [formGroupName]="i" data-test="order-item">
         <div class="order-form__item">
           <div class="order-form__form-group">
             <label [for]="'productId' + i" class="order-form__label">Product</label>
             <select [id]="'productId' + i" 
                     formControlName="productId" 
-                    class="order-form__input">
+                    class="order-form__input"
+                    data-test="product-select">
               <option value="">Select a product</option>
               <option *ngFor="let product of (products$ | async)" 
                       [value]="product.id">
@@ -45,6 +48,7 @@
                    [id]="'quantity' + i" 
                    formControlName="quantity" 
                    class="order-form__input"
+                   data-test="quantity-input"
                    placeholder="0"
                    min="1">
           </div>
@@ -52,7 +56,8 @@
           <div class="order-form__form-group">
             <button type="button" 
                     (click)="removeOrderItem(i)" 
-                    class="order-form__button order-form__button--danger">
+                    class="order-form__button order-form__button--danger"
+                    data-test="remove-item-button">
               Remove
             </button>
           </div>
@@ -61,7 +66,8 @@
 
       <button type="button" 
               (click)="addOrderItem()" 
-              class="order-form__button order-form__button--secondary">
+              class="order-form__button order-form__button--secondary"
+              data-test="add-item-button">
         Add Item
       </button>
     </div>
@@ -69,13 +75,14 @@
     <div class="order-form__submit-section">
       <button type="submit" 
               [disabled]="!orderForm.valid" 
-              class="order-form__button order-form__button--primary">
+              class="order-form__button order-form__button--primary"
+              data-test="submit-button">
         Create Order
       </button>
     </div>
   </form>
 
-  <div *ngIf="error$ | async as error" class="order-form__error">
+  <div *ngIf="error$ | async as error" class="order-form__error" data-test="error-message">
     {{error}}
   </div>
 </div> 
