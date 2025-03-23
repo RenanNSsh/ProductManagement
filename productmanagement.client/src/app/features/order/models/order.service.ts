@@ -1,9 +1,13 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { OrderDto, CreateOrderDto, UpdateOrderStatusDto, PaginatedResponseDTO } from '../models/order.dto';
-import { OrderStatus } from '../models/order-status.enum';
-import { environment } from '../../environments/environment';
+
+import { environment } from '../../../../environments/environment';
+import { PaginatedResponseDTO } from '../../../shared/models/paginated-reponse.dto';
+import { CreateOrderDto } from './create-order.dto';
+import { OrderDto } from './order.dto';
+import { OrderStatus } from './order-status.enum';
+import { UpdateOrderStatusDto } from './update-order-status.dto';
 
 @Injectable({
   providedIn: 'root'

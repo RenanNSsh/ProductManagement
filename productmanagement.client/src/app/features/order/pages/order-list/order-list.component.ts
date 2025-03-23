@@ -1,18 +1,19 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+
+import { SkeletonLoaderComponent } from '../../../../shared/components/skeleton-loader/skeleton-loader.component';
+import { ApiErrorDto } from '../../../../shared/models/api-error.dto';
 import { OrderDto } from '../../models/order.dto';
+import { OrderState } from '../../models/order.state';
 import { OrderStatus } from '../../models/order-status.enum';
-import * as OrderActions from '../../store/order/order.actions';
-import { OrderState } from '../../store/order/order.reducer';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { SkeletonLoaderComponent } from '../skeleton-loader/skeleton-loader.component';
+import * as OrderActions from '../../store/order.actions';
 
 @Component({
   selector: 'app-order-list',
   templateUrl: './order-list.component.html',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
@@ -23,7 +24,7 @@ import { SkeletonLoaderComponent } from '../skeleton-loader/skeleton-loader.comp
 export class OrderListComponent implements OnInit {
   orders$: Observable<OrderDto[]>;
   loading$: Observable<boolean>;
-  error$: Observable<any>;
+  error$: Observable<ApiErrorDto | null>;
   orderStatuses = Object.values(OrderStatus).filter(value => typeof value === 'number');
   selectedStatus: OrderStatus | null = null;
 
@@ -41,7 +42,7 @@ export class OrderListComponent implements OnInit {
     this.store.dispatch(OrderActions.loadOrders());
   }
 
-  onStatusChange(event: Event): void {
+  onStatusChange(_event: Event): void {
     if (this.selectedStatus === null) {
       this.loadAllOrders();
     } else {

@@ -1,14 +1,15 @@
+import { provideHttpClient } from '@angular/common/http';
+import { isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
+import { provideEffects } from '@ngrx/effects';
+import { provideStore } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app-routes';
-import { provideRouter } from '@angular/router';
-import { provideStore } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { isDevMode } from '@angular/core';
-import { orderReducer } from './app/store/order/order.reducer';
-import { OrderEffects } from './app/store/order/order.effects';
-import { provideHttpClient } from '@angular/common/http';
+import { OrderEffects } from './app/features/order/store/order.effects';
+import { orderReducer } from './app/features/order/store/order.reducer';
 
 bootstrapApplication(AppComponent, {
   providers: [

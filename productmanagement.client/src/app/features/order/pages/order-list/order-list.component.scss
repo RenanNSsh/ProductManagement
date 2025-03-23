@@ -55,6 +55,7 @@
       text-align: left;
       display: flex;
       align-items: center;
+      min-width: 0;
     }
   }
 
@@ -67,6 +68,7 @@
       display: flex;
       text-align: left;
       align-items: center;
+      min-width: 0;
     }
   }
 
@@ -94,29 +96,6 @@
   overflow-x: auto;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: var(--spacing-xl);
-}
-
-th, td {
-  padding: var(--spacing-md);
-  text-align: left;
-  border-bottom: 1px solid var(--color-table-border);
-}
-
-th {
-  background-color: var(--color-table-header);
-  font-weight: var(--font-weight-bold);
-}
-
-/* Fixed column widths */
-th:nth-child(1), td:nth-child(1) { width: 15%; }  /* Order ID */
-th:nth-child(2), td:nth-child(2) { width: 25%; }  /* Customer Name */
-th:nth-child(3), td:nth-child(3) { width: 20%; }  /* Total Amount */
-th:nth-child(4), td:nth-child(4) { width: 20%; }  /* Status */
-th:nth-child(5), td:nth-child(5) { width: 20%; }  /* Actions */
 
 .order-card {
   border: 1px solid var(--color-secondary);

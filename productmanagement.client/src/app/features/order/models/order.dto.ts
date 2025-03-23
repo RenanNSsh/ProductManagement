@@ -1,3 +1,4 @@
+import { OrderItemDto } from './order-item.dto';
 import { OrderStatus } from './order-status.enum';
 
 export interface PaginatedResponseDTO<T> {
@@ -22,14 +23,7 @@ export interface OrderDto {
   updatedAt?: Date;
 }
 
-export interface OrderItemDto {
-  id: string;
-  productId: string;
-  productName: string;
-  quantity: number;
-  unitPrice: number;
-  totalPrice: number;
-}
+
 
 export interface CreateOrderDto {
   customerName: string;

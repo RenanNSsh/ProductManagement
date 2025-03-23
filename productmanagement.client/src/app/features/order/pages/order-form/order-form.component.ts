@@ -1,12 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule,Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { ProductDto } from '../../models/product.dto';
-import { CreateOrderDto, CreateOrderItemDto } from '../../models/order.dto';
-import * as OrderActions from '../../store/order/order.actions';
-import { OrderState } from '../../store/order/order.reducer';
-import { CommonModule } from '@angular/common';
+import { map } from 'rxjs/operators';
+
+import { ApiErrorDto } from '../../../../shared/models/api-error.dto';
+import { ProductDto } from '../../../products/product.dto';
+import { ProductService } from '../../../products/product.service';
+import { CreateOrderDto } from '../../models/create-order.dto';
+import { OrderState } from '../../models/order.state';
+import { OrderItemDto } from '../../models/order-item.dto';
+import * as OrderActions from '../../store/order.actions';
 
 @Component({
   selector: 'app-order-form',
@@ -20,12 +25,13 @@ import { CommonModule } from '@angular/common';
 })
 export class OrderFormComponent implements OnInit {
   orderForm: FormGroup;
-  products$: Observable<ProductDto[]> = new Observable<ProductDto[]>();
-  error$: Observable<any>;
+  products$: Observable<ProductDto[]>;
+  error$: Observable<ApiErrorDto | null>;
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<{ order: OrderState }>
+    private store: Store<{ order: OrderState }>,
+    private productService: ProductService
   ) {
     this.orderForm = this.fb.group({
       customerName: ['', Validators.required],
@@ -34,11 +40,13 @@ export class OrderFormComponent implements OnInit {
     });
 
     this.error$ = this.store.select(state => state.order.error);
+    this.products$ = this.productService.getProducts().pipe(
+      map(response => response.items)
+    );
   }
 
   ngOnInit(): void {
-    // Load products from store
-    // this.products$ = this.store.select(state => state.product.products);
+    this.addOrderItem();
   }
 
   get orderItems() {
@@ -66,7 +74,7 @@ export class OrderFormComponent implements OnInit {
       const order: CreateOrderDto = {
         customerName: formValue.customerName,
         customerEmail: formValue.customerEmail,
-        orderItems: formValue.orderItems.map((item: any) => ({
+        orderItems: formValue.orderItems.map((item: OrderItemDto) => ({
           productId: item.productId,
           quantity: item.quantity
         }))

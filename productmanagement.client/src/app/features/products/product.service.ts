@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProductDto } from '../models/product.dto';
-import { PaginatedResponseDTO } from '../models/order.dto';
-import { environment } from '../../environments/environment';
+
+import { environment } from '../../../environments/environment';
+import { PaginatedResponseDTO } from '../../shared/models/paginated-reponse.dto';
+import { ProductDto } from './product.dto';
 
 @Injectable({
   providedIn: 'root'

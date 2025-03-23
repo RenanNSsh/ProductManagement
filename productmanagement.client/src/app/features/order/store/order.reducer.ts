@@ -1,13 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
-import { OrderDto } from '../../models/order.dto';
-import * as OrderActions from './order.actions';
 
-export interface OrderState {
-  orders: OrderDto[];
-  selectedOrder: OrderDto | null;
-  loading: boolean;
-  error: any;
-}
+import { OrderState } from '../models/order.state';
+import * as OrderActions from './order.actions';
 
 export const initialState: OrderState = {
   orders: [],
