@@ -12,6 +12,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { orderReducer } from './app/features/order/store/order.reducer';
 import { routes } from './app/app-routes';
 import { OrderEffects } from './app/features/order/store/order.effects';
+import { provideServiceWorker } from '@angular/service-worker';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -30,6 +31,9 @@ bootstrapApplication(AppComponent, {
       preventDuplicates: true,
       progressBar: true,
       closeButton: true
-    })
+    }), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          })
   ]
 }).catch(err => console.error(err));
