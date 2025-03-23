@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule,Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 import { ApiErrorDto } from '../../../../shared/models/api-error.dto';
 import { ProductDto } from '../../../products/product.dto';
@@ -31,7 +32,8 @@ export class OrderFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private store: Store<{ order: OrderState }>,
-    private productService: ProductService
+    private productService: ProductService,
+    private toastr: ToastrService
   ) {
     this.orderForm = this.fb.group({
       customerName: ['', Validators.required],
@@ -84,6 +86,7 @@ export class OrderFormComponent implements OnInit {
       this.orderForm.reset();
       this.orderItems.clear();
       this.addOrderItem();
+      this.toastr.success('Order created successfully!', 'Success');
     }
   }
 } 
