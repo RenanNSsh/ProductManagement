@@ -9,7 +9,6 @@ import { isDevMode } from '@angular/core';
 import { orderReducer } from './app/store/order/order.reducer';
 import { OrderEffects } from './app/store/order/order.effects';
 import { provideHttpClient } from '@angular/common/http';
-import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 bootstrapApplication(AppComponent, {
   providers: [

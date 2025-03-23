@@ -1,32 +1,36 @@
-<div class="container">
-  <h2>Create New Order</h2>
+<div class="order-form__container">
+  <h2 class="order-form__title">Create New Order</h2>
 
   <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="customerName">Customer Name</label>
-      <input type="text" 
-             id="customerName" 
-             formControlName="customerName" 
-             class="form-control">
+    <div class="order-form__customer-section">
+      <div class="order-form__form-group">
+        <label for="customerName" class="order-form__label">Customer Name</label>
+        <input type="text" 
+               id="customerName" 
+               formControlName="customerName" 
+               class="order-form__input"
+               placeholder="Enter customer name">
+      </div>
+
+      <div class="order-form__form-group">
+        <label for="customerEmail" class="order-form__label">Customer Email</label>
+        <input type="email" 
+               id="customerEmail" 
+               formControlName="customerEmail" 
+               class="order-form__input"
+               placeholder="Enter customer email">
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="customerEmail">Customer Email</label>
-      <input type="email" 
-             id="customerEmail" 
-             formControlName="customerEmail" 
-             class="form-control">
-    </div>
-
-    <div formArrayName="orderItems">
-      <h3>Order Items</h3>
+    <div formArrayName="orderItems" class="order-form__items">
+      <h3 class="order-form__items-title">Order Items</h3>
       <div *ngFor="let item of orderItems.controls; let i=index" [formGroupName]="i">
-        <div class="order-item">
-          <div class="form-group">
-            <label [for]="'productId' + i">Product</label>
+        <div class="order-form__item">
+          <div class="order-form__form-group">
+            <label [for]="'productId' + i" class="order-form__label">Product</label>
             <select [id]="'productId' + i" 
                     formControlName="productId" 
-                    class="form-control">
+                    class="order-form__input">
               <option value="">Select a product</option>
               <option *ngFor="let product of (products$ | async)" 
                       [value]="product.id">
@@ -35,37 +39,43 @@
             </select>
           </div>
 
-          <div class="form-group">
-            <label [for]="'quantity' + i">Quantity</label>
+          <div class="order-form__form-group">
+            <label [for]="'quantity' + i" class="order-form__label">Quantity</label>
             <input type="number" 
                    [id]="'quantity' + i" 
                    formControlName="quantity" 
-                   class="form-control">
+                   class="order-form__input"
+                   placeholder="0"
+                   min="1">
           </div>
 
-          <button type="button" 
-                  (click)="removeOrderItem(i)" 
-                  class="btn btn-danger">
-            Remove
-          </button>
+          <div class="order-form__form-group">
+            <button type="button" 
+                    (click)="removeOrderItem(i)" 
+                    class="order-form__button order-form__button--danger">
+              Remove
+            </button>
+          </div>
         </div>
       </div>
 
       <button type="button" 
               (click)="addOrderItem()" 
-              class="btn btn-secondary">
+              class="order-form__button order-form__button--secondary">
         Add Item
       </button>
     </div>
 
-    <button type="submit" 
-            [disabled]="!orderForm.valid" 
-            class="btn btn-primary">
-      Create Order
-    </button>
+    <div class="order-form__submit-section">
+      <button type="submit" 
+              [disabled]="!orderForm.valid" 
+              class="order-form__button order-form__button--primary">
+        Create Order
+      </button>
+    </div>
   </form>
 
-  <div *ngIf="error$ | async as error" class="error">
+  <div *ngIf="error$ | async as error" class="order-form__error">
     {{error}}
   </div>
 </div> 

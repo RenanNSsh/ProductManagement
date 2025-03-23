@@ -1,14 +1,15 @@
-﻿
-<nav class="navbar">
-    <div class="container">
-      <h1>Product Management</h1>
-      <ul>
-        <li><a routerLink="/orders" routerLinkActive="active">Orders</a></li>
-        <li><a routerLink="/orders/new" routerLinkActive="active">New Order</a></li>
+﻿<div class="app__container">
+  <nav class="app__navbar">
+    <div class="app__navbar-container">
+      <h1 class="app__navbar-title">Product Management</h1>
+      <ul class="app__navbar-list">
+        <li><a routerLink="/orders" routerLinkActive="app__navbar-link--active" class="app__navbar-link">Orders</a></li>
+        <li><a routerLink="/orders/new" routerLinkActive="app__navbar-link--active" class="app__navbar-link">New Order</a></li>
       </ul>
     </div>
   </nav>
 
-  <main class="main-content">
+  <main class="app__main-content">
     <router-outlet></router-outlet>
   </main>
+</div>

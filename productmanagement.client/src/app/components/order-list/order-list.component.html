@@ -1,52 +1,52 @@
-<div class="container">
-  <div class="header">
-    <h2>Orders</h2>
-    <div class="status-filter">
+<div class="order-list__container">
+  <div class="order-list__header">
+    <h2 class="order-list__title">Orders</h2>
+    <div class="order-list__status-filter">
       <select [(ngModel)]="selectedStatus" (change)="onStatusChange($event)">
         <option [ngValue]="null">All Orders</option>
-        <option *ngFor="let status of orderStatuses" [ngValue]="status">
+        <option *ngFor="let status of orderStatuses" [value]="status">
           {{getStatusLabel(status)}}
         </option>
       </select>
     </div>
   </div>
 
-  <div *ngIf="error$ | async as error" class="error">
+  <div *ngIf="error$ | async as error" class="order-list__error">
     Error: {{ error }}
   </div>
 
-  <div *ngIf="loading$ | async" class="orders-grid">
-    <div class="grid-header">
-      <div>Order ID</div>
-      <div>Customer Name</div>
-      <div>Total Amount</div>
-      <div>Status</div>
-      <div>Actions</div>
+  <div *ngIf="loading$ | async" class="order-list__grid">
+    <div class="order-list__grid-header">
+      <div class="order-list__grid-header-cell">Order ID</div>
+      <div class="order-list__grid-header-cell">Customer Name</div>
+      <div class="order-list__grid-header-cell">Total Amount</div>
+      <div class="order-list__grid-header-cell">Status</div>
+      <div class="order-list__grid-header-cell">Actions</div>
     </div>
-    <div *ngFor="let i of [1,2,3,4,5]" class="grid-row">
-      <div><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
-      <div><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
-      <div><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
-      <div><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
-      <div><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
+    <div *ngFor="let i of [1,2,3,4,5]" class="order-list__grid-row">
+      <div class="order-list__grid-row-cell"><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
+      <div class="order-list__grid-row-cell"><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
+      <div class="order-list__grid-row-cell"><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
+      <div class="order-list__grid-row-cell"><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
+      <div class="order-list__grid-row-cell"><app-skeleton-loader width="100%" height="24px"></app-skeleton-loader></div>
     </div>
   </div>
 
-  <div *ngIf="!(loading$ | async) && !(error$ | async)" class="orders-grid">
-    <div class="grid-header">
-      <div>Order ID</div>
-      <div>Customer Name</div>
-      <div>Total Amount</div>
-      <div>Status</div>
-      <div>Actions</div>
+  <div *ngIf="!(loading$ | async) && !(error$ | async)" class="order-list__grid">
+    <div class="order-list__grid-header">
+      <div class="order-list__grid-header-cell">Order ID</div>
+      <div class="order-list__grid-header-cell">Customer Name</div>
+      <div class="order-list__grid-header-cell">Total Amount</div>
+      <div class="order-list__grid-header-cell">Status</div>
+      <div class="order-list__grid-header-cell">Actions</div>
     </div>
-    <div *ngFor="let order of orders$ | async" class="grid-row">
-      <div>{{ order.id }}</div>
-      <div>{{ order.customerName }}</div>
-      <div>{{ order.totalAmount | currency }}</div>
-      <div>{{ getStatusLabel(order.status) }}</div>
-      <div>
-        <select [(ngModel)]="order.status" (change)="updateOrderStatus(order.id, $event)">
+    <div *ngFor="let order of orders$ | async" class="order-list__grid-row">
+      <div class="order-list__grid-row-cell">{{ order.id }}</div>
+      <div class="order-list__grid-row-cell">{{ order.customerName }}</div>
+      <div class="order-list__grid-row-cell">{{ order.totalAmount | currency }}</div>
+      <div class="order-list__grid-row-cell">{{ getStatusLabel(order.status) }}</div>
+      <div class="order-list__grid-row-cell">
+        <select class="order-list__status-select" [(ngModel)]="order.status" (change)="updateOrderStatus(order.id, $event)">
           <option *ngFor="let status of orderStatuses" [value]="status">
             {{getStatusLabel(status)}}
           </option>

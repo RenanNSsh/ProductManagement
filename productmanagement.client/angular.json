@@ -38,8 +38,8 @@
               }
             ],
             "styles": [
-              "src/styles.scss",
-              "src/reset.css"
+              "src/reset.css",
+              "src/styles.scss"
             ],
             "scripts": []
           },
