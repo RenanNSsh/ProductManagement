@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 
 import { ApiErrorDto } from '../../../../shared/models/api-error.dto';
 import { ProductDto } from '../../../products/models/product.dto';
-import { ProductService } from '../../../products/services/product.service';
+import { ProductService } from '../../../products/services/product/product.service';
 import { CreateOrderDto } from '../../models/create-order.dto';
 import { OrderState } from '../../models/order.state';
 import { OrderItemDto } from '../../models/order-item.dto';

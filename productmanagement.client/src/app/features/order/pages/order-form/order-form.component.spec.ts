@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { of } from 'rxjs';
 
 import { ProductDto } from '../../../products/models/product.dto';
-import { ProductService } from '../../../products/services/product.service';
+import { ProductService } from '../../../products/services/product/product.service';
 import { OrderFormComponent } from './order-form.component';
 
 describe('OrderFormComponent', () => {

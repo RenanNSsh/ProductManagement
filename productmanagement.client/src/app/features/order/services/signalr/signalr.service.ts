@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject } from 'rxjs';
 
-import { environment } from '../../../../environments/environment';
-import { OrderDto } from '../models/order.dto';
-import { OrderStatus } from '../models/order-status.enum';
+import { environment } from '../../../../../environments/environment';
+import { OrderDto } from '../../models/order.dto';
+import { OrderStatus } from '../../models/order-status.enum';
 
 @Injectable({
   providedIn: 'root'

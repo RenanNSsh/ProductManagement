@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError,map, mergeMap } from 'rxjs/operators';
 
-import { OrderService } from '../models/order.service';
+import { OrderService } from '../services/order/order.service';
 import * as OrderActions from './order.actions';
 
 @Injectable()

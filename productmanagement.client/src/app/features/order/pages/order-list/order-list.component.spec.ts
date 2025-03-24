@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 
 import { OrderDto } from '../../models/order.dto';
 import { OrderStatus } from '../../models/order-status.enum';
-import { SignalRService } from '../../services/signalr.service';
+import { SignalRService } from '../../services/signalr/signalr.service';
 import { selectError, selectLoading, selectOrders } from '../../store/order.selectors';
 import { OrderListComponent } from './order-list.component';
 

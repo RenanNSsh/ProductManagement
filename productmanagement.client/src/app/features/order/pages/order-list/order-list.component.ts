@@ -10,7 +10,7 @@ import { OrderDto } from '../../models/order.dto';
 import { OrderState } from '../../models/order.state';
 import { OrderFilterForm } from '../../models/order-filter-form.interface';
 import { OrderStatus } from '../../models/order-status.enum';
-import { SignalRService } from '../../services/signalr.service';
+import { SignalRService } from '../../services/signalr/signalr.service';
 import * as OrderActions from '../../store/order.actions';
 import { selectError,selectLoading, selectOrders } from '../../store/order.selectors';
 
