@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -22,7 +22,8 @@ import * as OrderActions from '../../store/order.actions';
     FormsModule,
     ReactiveFormsModule
   ],
-  styleUrls: ['./order-form.component.scss']
+  styleUrls: ['./order-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderFormComponent implements OnInit {
   orderForm: FormGroup;

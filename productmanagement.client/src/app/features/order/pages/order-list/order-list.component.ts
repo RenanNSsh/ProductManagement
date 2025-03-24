@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
@@ -20,7 +20,8 @@ import { SignalRService } from '../../services/signalr.service';
     FormsModule,
     SkeletonLoaderComponent
   ],
-  styleUrls: ['./order-list.component.scss']
+  styleUrls: ['./order-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderListComponent implements OnInit, OnDestroy {
   orders$: Observable<OrderDto[]>;

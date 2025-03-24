@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-skeleton-loader',
   templateUrl: './skeleton-loader.component.html',
   styleUrls: ['./skeleton-loader.component.scss'],
-  imports: [CommonModule]
+  imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SkeletonLoaderComponent {
   @Input() width = '100%';
