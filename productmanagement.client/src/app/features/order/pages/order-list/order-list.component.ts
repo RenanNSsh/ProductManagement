@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
@@ -9,8 +9,10 @@ import { ApiErrorDto } from '../../../../shared/models/api-error.dto';
 import { OrderDto } from '../../models/order.dto';
 import { OrderState } from '../../models/order.state';
 import { OrderStatus } from '../../models/order-status.enum';
+import { OrderFilterForm } from '../../models/order-filter-form.interface';
 import * as OrderActions from '../../store/order.actions';
 import { SignalRService } from '../../services/signalr.service';
+import { selectOrders, selectLoading, selectError } from '../../store/order.selectors';
 
 @Component({
   selector: 'app-order-list',
@@ -28,7 +30,7 @@ export class OrderListComponent implements OnInit, OnDestroy {
   loading$: Observable<boolean>;
   error$: Observable<ApiErrorDto | null>;
   orderStatuses = Object.values(OrderStatus).filter(value => typeof value === 'number');
-  filterForm: FormGroup;
+  filterForm: FormGroup<OrderFilterForm>;
   private signalRSubscription: Subscription = new Subscription();
   private newOrderSubscription: Subscription = new Subscription();
   private statusFilterSubscription: Subscription = new Subscription();
@@ -38,25 +40,23 @@ export class OrderListComponent implements OnInit, OnDestroy {
     private signalRService: SignalRService,
     private fb: FormBuilder
   ) {
-    this.orders$ = this.store.select(state => state.order.orders);
-    this.loading$ = this.store.select(state => state.order.loading);
-    this.error$ = this.store.select(state => state.order.error);
+    this.orders$ = this.store.select(selectOrders);
+    this.loading$ = this.store.select(selectLoading);
+    this.error$ = this.store.select(selectError);
     
-    this.filterForm = this.fb.group({
-      status: [null]
+    this.filterForm = this.fb.group<OrderFilterForm>({
+      status: new FormControl<OrderStatus | null>(null)
     });
 
     // Subscribe to status changes
-    const statusControl = this.filterForm.get('status');
-    if (statusControl) {
-      this.statusFilterSubscription = statusControl.valueChanges.subscribe(status => {
-        if (status === null) {
-          this.loadAllOrders();
-        } else {
-          this.loadOrdersByStatus(status);
-        }
-      });
-    }
+    const statusControl = this.filterForm.controls.status;
+    this.statusFilterSubscription = statusControl.valueChanges.subscribe(status => {
+      if (status === null) {
+        this.loadAllOrders();
+      } else {
+        this.loadOrdersByStatus(status);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -64,13 +64,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
     this.setupSignalR();
   }
 
-  ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
-    this.signalRSubscription.unsubscribe();
-    this.newOrderSubscription.unsubscribe();
-    this.statusFilterSubscription.unsubscribe();
-    this.signalRService.disconnect();
-  }
 
   setupSignalR(): void {
     // Handle order updates
@@ -85,7 +78,7 @@ export class OrderListComponent implements OnInit, OnDestroy {
     this.newOrderSubscription = this.signalRService.getOrderCreated()
       .subscribe(order => {
         if (order) {
-          const currentStatus = this.filterForm.get('status')?.value;
+          const currentStatus = this.filterForm.controls.status.value;
           // Only refresh if we're not filtering or if the new order matches our filter
           if (currentStatus === null || order.status === currentStatus) {
             this.refreshOrders();
@@ -95,7 +88,7 @@ export class OrderListComponent implements OnInit, OnDestroy {
   }
 
   private refreshOrders(): void {
-    const status = this.filterForm.get('status')?.value;
+    const status = this.filterForm.controls.status.value;
     if (status === null) {
       this.loadAllOrders();
     } else {
@@ -113,7 +106,7 @@ export class OrderListComponent implements OnInit, OnDestroy {
 
   updateOrderStatus(orderId: string, event: Event): void {
     const select = event.target as HTMLSelectElement;
-    const status = Number(select.value) as OrderStatus;
+    const status = parseInt(select.value, 10) as OrderStatus;
     this.store.dispatch(OrderActions.updateOrderStatus({
       id: orderId,
       status: { status }
@@ -122,5 +115,13 @@ export class OrderListComponent implements OnInit, OnDestroy {
 
   getStatusLabel(status: OrderStatus): string {
     return OrderStatus[status];
+  }
+  
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this.signalRSubscription.unsubscribe();
+    this.newOrderSubscription.unsubscribe();
+    this.statusFilterSubscription.unsubscribe();
+    this.signalRService.disconnect();
   }
 } 

@@ -6,6 +6,8 @@ import { OrderStatus } from '../../models/order-status.enum';
 import { OrderDto } from '../../models/order.dto';
 import { SignalRService } from '../../services/signalr.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { selectOrders, selectLoading, selectError } from '../../store/order.selectors';
+import { MemoizedSelector } from '@ngrx/store';
 
 describe('OrderListComponent', () => {
   let component: OrderListComponent;
@@ -31,7 +33,18 @@ describe('OrderListComponent', () => {
     const storeSpy = jasmine.createSpyObj('Store', ['select', 'dispatch']);
     const signalRSpy = jasmine.createSpyObj('SignalRService', ['getOrderUpdates', 'getOrderCreated', 'disconnect']);
 
-    storeSpy.select.and.returnValue(of(mockOrders));
+    storeSpy.select.and.callFake((selector: MemoizedSelector<any, any>) => {
+      if (selector === selectOrders) {
+        return of(mockOrders);
+      }
+      if (selector === selectLoading) {
+        return of(false);
+      }
+      if (selector === selectError) {
+        return of(null);
+      }
+      return of(null);
+    });
     signalRSpy.getOrderUpdates.and.returnValue(of(null));
     signalRSpy.getOrderCreated.and.returnValue(of(null));
 

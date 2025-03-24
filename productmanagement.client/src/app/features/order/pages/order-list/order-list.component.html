@@ -2,7 +2,7 @@
   <div class="order-list__header">
     <h2 class="order-list__title" data-test="orders-title">Orders</h2>
     <div class="order-list__status-filter">
-      <select data-test="status-filter" [formControl]="filterForm.get('status')">
+      <select class="form-select" data-test="status-filter" [formControl]="filterForm.controls.status">
         <option [ngValue]="null">All Orders</option>
         <option *ngFor="let status of orderStatuses" [ngValue]="status">
           {{getStatusLabel(status)}}
