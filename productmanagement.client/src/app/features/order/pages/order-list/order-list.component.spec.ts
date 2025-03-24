@@ -4,10 +4,8 @@ import { of } from 'rxjs';
 import { OrderListComponent } from './order-list.component';
 import { OrderStatus } from '../../models/order-status.enum';
 import { OrderDto } from '../../models/order.dto';
-import { ApiErrorDto } from '../../../../shared/models/api-error.dto';
 import { SignalRService } from '../../services/signalr.service';
-import { SkeletonLoaderComponent } from '../../../../shared/components/skeleton-loader/skeleton-loader.component';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('OrderListComponent', () => {
   let component: OrderListComponent;
@@ -38,7 +36,7 @@ describe('OrderListComponent', () => {
     signalRSpy.getOrderCreated.and.returnValue(of(null));
 
     await TestBed.configureTestingModule({
-      imports: [OrderListComponent, FormsModule],
+      imports: [OrderListComponent, ReactiveFormsModule],
       providers: [
         { provide: Store, useValue: storeSpy },
         { provide: SignalRService, useValue: signalRSpy }
@@ -66,21 +64,42 @@ describe('OrderListComponent', () => {
     });
   });
 
+  it('should initialize filter form', () => {
+    expect(component.filterForm).toBeDefined();
+    expect(component.filterForm.get('status')).toBeDefined();
+    expect(component.filterForm.get('status')?.value).toBeNull();
+  });
+
   it('should load all orders on init', () => {
     component.ngOnInit();
     expect(store.dispatch).toHaveBeenCalled();
   });
 
-  it('should handle status change', () => {
-    const event = { target: { value: OrderStatus.Pending } } as unknown as Event;
-    component.onStatusChange(event);
-    expect(store.dispatch).toHaveBeenCalled();
+  it('should load orders by status when filter changes', () => {
+    const statusControl = component.filterForm.get('status');
+    statusControl?.setValue(OrderStatus.Pending);
+    expect(store.dispatch).toHaveBeenCalledWith(jasmine.objectContaining({
+      type: '[Order] Load Orders By Status',
+      status: OrderStatus.Pending
+    }));
+  });
+
+  it('should load all orders when filter is cleared', () => {
+    const statusControl = component.filterForm.get('status');
+    statusControl?.setValue(null);
+    expect(store.dispatch).toHaveBeenCalledWith(jasmine.objectContaining({
+      type: '[Order] Load Orders'
+    }));
   });
 
   it('should update order status', () => {
     const event = { target: { value: OrderStatus.Processing } } as unknown as Event;
     component.updateOrderStatus('1', event);
-    expect(store.dispatch).toHaveBeenCalled();
+    expect(store.dispatch).toHaveBeenCalledWith(jasmine.objectContaining({
+      type: '[Order] Update Order Status',
+      id: '1',
+      status: { status: OrderStatus.Processing }
+    }));
   });
 
   it('should get status label', () => {
@@ -88,8 +107,36 @@ describe('OrderListComponent', () => {
     expect(label).toBe('Pending');
   });
 
-  it('should cleanup subscriptions on destroy', () => {
+  it('should refresh orders when receiving SignalR updates', () => {
+    const mockOrder = { ...mockOrders[0], status: OrderStatus.Processing };
+    signalRService.getOrderUpdates.and.returnValue(of(mockOrder));
+    
+    component.setupSignalR();
+    fixture.detectChanges();
+    
+    expect(store.dispatch).toHaveBeenCalled();
+  });
+
+  it('should refresh orders when receiving new orders via SignalR', () => {
+    const mockOrder = { ...mockOrders[0], status: OrderStatus.Pending };
+    signalRService.getOrderCreated.and.returnValue(of(mockOrder));
+    
+    component.setupSignalR();
+    fixture.detectChanges();
+    
+    expect(store.dispatch).toHaveBeenCalled();
+  });
+
+  it('should cleanup all subscriptions on destroy', () => {
+    const unsubscribeSpy = spyOn(component['signalRSubscription'], 'unsubscribe');
+    const newOrderUnsubscribeSpy = spyOn(component['newOrderSubscription'], 'unsubscribe');
+    const statusFilterUnsubscribeSpy = spyOn(component['statusFilterSubscription'], 'unsubscribe');
+
     component.ngOnDestroy();
+
+    expect(unsubscribeSpy).toHaveBeenCalled();
+    expect(newOrderUnsubscribeSpy).toHaveBeenCalled();
+    expect(statusFilterUnsubscribeSpy).toHaveBeenCalled();
     expect(signalRService.disconnect).toHaveBeenCalled();
   });
 }); 

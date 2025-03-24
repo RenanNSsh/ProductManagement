@@ -2,7 +2,7 @@
   <div class="order-list__header">
     <h2 class="order-list__title" data-test="orders-title">Orders</h2>
     <div class="order-list__status-filter">
-      <select data-test="status-filter" [(ngModel)]="selectedStatus" (change)="onStatusChange($event)">
+      <select data-test="status-filter" [formControl]="filterForm.get('status')">
         <option [ngValue]="null">All Orders</option>
         <option *ngFor="let status of orderStatuses" [ngValue]="status">
           {{getStatusLabel(status)}}
@@ -46,8 +46,8 @@
       <div class="order-list__grid-row-cell" data-test="total-amount">{{ order.totalAmount | currency }}</div>
       <div class="order-list__grid-row-cell" data-test="order-status">{{ getStatusLabel(order.status) }}</div>
       <div class="order-list__grid-row-cell">
-        <select data-test="status-select" class="order-list__status-select" [(ngModel)]="order.status" (change)="updateOrderStatus(order.id, $event)">
-          <option *ngFor="let status of orderStatuses" [value]="status">
+        <select data-test="status-select" class="order-list__status-select" (change)="updateOrderStatus(order.id, $event)">
+          <option *ngFor="let status of orderStatuses" [value]="status" [selected]="status === order.status">
             {{getStatusLabel(status)}}
           </option>
         </select>
