@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ProductManagement.Domain\ProductManagement.Domain.csproj" />
-    <ProjectReference Include="..\ProductManagement.Infrastructure\ProductManagement.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

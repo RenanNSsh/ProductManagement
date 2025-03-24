@@ -94,8 +94,8 @@ The solution consists of two main parts:
 
 The application will be available at:
 - Frontend: https://localhost:56554
-- Backend API: https://localhost:7097
-- Swagger UI: https://localhost:7097/swagger
+- Backend API: https://localhost:44300
+- Swagger UI: https://localhost:44300/swagger
 
 ## Testing
 
@@ -152,14 +152,6 @@ ProductManagement/
     └── ProductManagement.Persistence/# Data access
 ```
 
-## Deployment
-
-The application can be deployed using Docker:
-
-```bash
-docker build -t productmanagement -f ProductManagement.Server/ProductManagement.API/Dockerfile .
-docker run -p 8080:8080 -p 8081:8081 productmanagement
-```
 
 ## Contributing
 
