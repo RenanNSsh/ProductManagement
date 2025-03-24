@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { OrderListComponent } from './order-list.component';
-import { OrderStatus } from '../../models/order-status.enum';
-import { OrderDto } from '../../models/order.dto';
-import { SignalRService } from '../../services/signalr.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { selectOrders, selectLoading, selectError } from '../../store/order.selectors';
+import { Store } from '@ngrx/store';
 import { MemoizedSelector } from '@ngrx/store';
+import { of } from 'rxjs';
+
+import { OrderDto } from '../../models/order.dto';
+import { OrderStatus } from '../../models/order-status.enum';
+import { SignalRService } from '../../services/signalr.service';
+import { selectError, selectLoading, selectOrders } from '../../store/order.selectors';
+import { OrderListComponent } from './order-list.component';
 
 describe('OrderListComponent', () => {
   let component: OrderListComponent;
@@ -33,7 +34,7 @@ describe('OrderListComponent', () => {
     const storeSpy = jasmine.createSpyObj('Store', ['select', 'dispatch']);
     const signalRSpy = jasmine.createSpyObj('SignalRService', ['getOrderUpdates', 'getOrderCreated', 'disconnect']);
 
-    storeSpy.select.and.callFake((selector: MemoizedSelector<any, any>) => {
+    storeSpy.select.and.callFake((selector: MemoizedSelector<object, unknown>) => {
       if (selector === selectOrders) {
         return of(mockOrders);
       }

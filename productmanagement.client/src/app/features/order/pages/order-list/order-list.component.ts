@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { ChangeDetectionStrategy,Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormControl,FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
@@ -8,11 +8,11 @@ import { SkeletonLoaderComponent } from '../../../../shared/components/skeleton-
 import { ApiErrorDto } from '../../../../shared/models/api-error.dto';
 import { OrderDto } from '../../models/order.dto';
 import { OrderState } from '../../models/order.state';
-import { OrderStatus } from '../../models/order-status.enum';
 import { OrderFilterForm } from '../../models/order-filter-form.interface';
-import * as OrderActions from '../../store/order.actions';
+import { OrderStatus } from '../../models/order-status.enum';
 import { SignalRService } from '../../services/signalr.service';
-import { selectOrders, selectLoading, selectError } from '../../store/order.selectors';
+import * as OrderActions from '../../store/order.actions';
+import { selectError,selectLoading, selectOrders } from '../../store/order.selectors';
 
 @Component({
   selector: 'app-order-list',

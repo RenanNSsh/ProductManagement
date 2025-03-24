@@ -1,18 +1,18 @@
 import { provideHttpClient } from '@angular/common/http';
 import { isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
+import { provideServiceWorker } from '@angular/service-worker';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideToastr } from 'ngx-toastr';
 
 import { AppComponent } from './app/app.component';
-import { provideToastr } from 'ngx-toastr';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { orderReducer } from './app/features/order/store/order.reducer';
 import { routes } from './app/app-routes';
 import { OrderEffects } from './app/features/order/store/order.effects';
-import { provideServiceWorker } from '@angular/service-worker';
+import { orderReducer } from './app/features/order/store/order.reducer';
 
 bootstrapApplication(AppComponent, {
   providers: [

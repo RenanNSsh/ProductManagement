@@ -1,19 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { OrderFormComponent } from './order-form.component';
-import { ProductService } from '../../../products/services/product.service';
-import { ToastrService } from 'ngx-toastr';
-import { ProductDto } from '../../../products/models/product.dto';
-import { ApiErrorDto } from '../../../../shared/models/api-error.dto';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { ToastrService } from 'ngx-toastr';
+import { of } from 'rxjs';
+
+import { ProductDto } from '../../../products/models/product.dto';
+import { ProductService } from '../../../products/services/product.service';
+import { OrderFormComponent } from './order-form.component';
 
 describe('OrderFormComponent', () => {
   let component: OrderFormComponent;
   let fixture: ComponentFixture<OrderFormComponent>;
   let store: jasmine.SpyObj<Store>;
-  let productService: jasmine.SpyObj<ProductService>;
   let toastr: jasmine.SpyObj<ToastrService>;
 
   const mockProducts: ProductDto[] = [
@@ -55,7 +54,6 @@ describe('OrderFormComponent', () => {
     }).compileComponents();
 
     store = TestBed.inject(Store) as jasmine.SpyObj<Store>;
-    productService = TestBed.inject(ProductService) as jasmine.SpyObj<ProductService>;
     toastr = TestBed.inject(ToastrService) as jasmine.SpyObj<ToastrService>;
   });
 

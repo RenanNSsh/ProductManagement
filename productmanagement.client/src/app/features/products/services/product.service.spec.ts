@@ -1,9 +1,10 @@
-import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ProductService } from './product.service';
+import { TestBed } from '@angular/core/testing';
+
 import { environment } from '../../../../environments/environment';
 import { PaginatedResponseDTO } from '../../../shared/models/paginated-reponse.dto';
 import { ProductDto } from '../models/product.dto';
+import { ProductService } from './product.service';
 
 describe('ProductService', () => {
   let service: ProductService;

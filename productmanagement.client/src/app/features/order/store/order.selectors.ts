@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { OrderState } from '../models/order.state';
+
 import { OrderDto } from '../models/order.dto';
-import { ApiErrorDto } from '../../../shared/models/api-error.dto';
+import { OrderState } from '../models/order.state';
 
 export const selectOrderState = createFeatureSelector<OrderState>('order');
 

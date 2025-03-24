@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy,Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ToastrService } from 'ngx-toastr';
 
 import { ApiErrorDto } from '../../../../shared/models/api-error.dto';
 import { ProductDto } from '../../../products/models/product.dto';

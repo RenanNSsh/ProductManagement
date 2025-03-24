@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+
 import { SignalRService } from './signalr.service';
-import { OrderDto } from '../models/order.dto';
-import { OrderStatus } from '../models/order-status.enum';
-import { environment } from '../../../../environments/environment';
 
 describe('SignalRService', () => {
   let service: SignalRService;
